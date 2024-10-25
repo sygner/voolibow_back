@@ -1,0 +1,84 @@
+syntax = "proto3";
+
+package wallet;
+
+option go_package = "./"; 
+
+service WalletService{
+    rpc RegisterWallet(RegisterWalletRequest) returns (RegisterWalletResponse);
+    rpc GetBalance(GetBalanceRequest) returns (GetBalanceResponse);
+    rpc TransferETH(TransferETHRequest) returns (Empty);
+    rpc GetWalletsByUserId(UserIdRequest) returns (Wallets);
+    rpc GetTransactionsByAddress(AddressRequest) returns (Transactions);
+}
+
+message Empty{
+
+}
+
+
+enum Currencies{
+    ETH = 0;
+}
+message RegisterWalletRequest{
+    int32 user_id = 1;
+    Currencies currency = 2;
+    string currency_full_name = 3;
+}
+
+message RegisterWalletResponse{
+    string address = 1;
+}
+
+message GetBalanceRequest{
+    int32 user_id = 1;
+    Currencies currency = 2;
+}
+
+message GetBalanceResponse{
+    double  balance = 1;
+}
+
+message TransferETHRequest{
+    int32 user_id = 1;
+    string to_address = 2;
+    double amount = 3;
+    string room_id = 4;
+
+}
+
+message UserIdRequest{
+    int32 user_id = 1;
+}
+
+message AddressRequest{
+    string address = 1;
+}
+message Wallet{
+    int32 user_id = 1;
+    string currency_id = 2;
+    string currency_full_name = 3;
+    string address = 4;
+    string public_key = 5;
+    string private_key = 6;
+    double last_balance = 7;
+    string last_balance_at = 8;
+    string created_at = 9;
+}
+
+message Transaction{
+    string tx_id = 1;
+    string room_id = 2;
+    string currency_id = 3;
+    string currency_full_name = 4;
+    string from_address = 5;
+    string to_address = 6;
+    string transtion_at = 7; 
+}
+
+message Transactions{
+    repeated Transaction transactions = 1;
+}
+message Wallets{
+    repeated Wallet wallets = 1;
+}

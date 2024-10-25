@@ -1,0 +1,26 @@
+version: "3"
+
+vars:
+    app_name: voolibow_gw
+
+tasks:
+    build:
+        desc: Build the app
+        cmds:
+        - GOFLAGS=-mod=mod GOARCH=amd64 GOOS=windows go build -o ./out/windows/{{.app_name}}/{{.app_name}}.exe cmd/main.go
+        - GOFLAGS=-mod=mod GOARCH=amd64 GOOS=linux go build -o ./out/linux/{{.app_name}}/{{.app_name}} cmd/main.go
+
+    generate: 
+        desc: Compile protobuf files
+        aliases: [gen]
+        vars:
+            VERSION: v1
+        cmds:
+        - protoc --go_out=./proto/api/user_authentication --go-grpc_out=./proto/api/user_authentication ./proto/protos/services/user_authentication/*.proto
+        - protoc --go_out=./proto/api/profile --go-grpc_out=./proto/api/profile ./proto/protos/services/profile/*.proto
+        - protoc --go_out=./proto/api/wallet --go-grpc_out=./proto/api/wallet ./proto/protos/services/wallet/*.proto
+
+    run: 
+        desc: Run the app
+        cmds:
+        - GOFLAGS=-mod=mod go run ./cmd/main.go --listen-address=127.0.0.1:8080 --user-authentication-server-address=127.0.0.1:8081 --profile-server-address=127.0.0.1:8082

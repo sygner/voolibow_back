@@ -1,0 +1,45 @@
+syntax = "proto3";
+ 
+package user;
+
+service UserService{
+    rpc GetUsers(Pagination) returns (Users);
+    rpc ChangeUserStatus(ChangeUserStatusRequest) returns (Empty);
+    rpc DeleteUser(DeleteUserRequest) returns (Empty);
+}
+
+enum UserStatus{
+    ON_GOING = 0;
+    SUSPENDED = 1;
+    DELETED = 2;
+    PERMANENT_BAN = 3;
+}
+
+message DeleteUserRequest{
+    int32 user_id = 1;
+}
+
+message User{
+    int32 user_id = 1;
+    string phone_number = 2;
+    string user_status = 3;
+    string created_at = 4;
+}
+
+message Users {
+    repeated User user = 1;
+    optional int64 total_count = 2;
+}
+
+message ChangeUserStatusRequest{
+    UserStatus user_status = 1;
+    int32 user_id = 2;
+}
+
+message Pagination{
+    int32 offset = 1;
+    int32 limit = 2;
+    bool get_total = 3;
+}
+
+message Empty{}

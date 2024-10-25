@@ -1,0 +1,48 @@
+syntax = "proto3";
+
+package profile;
+
+service ProfileService{
+    rpc AddProfile(AddProfileRequest) returns (Profile);
+    rpc UpdateUsername(UpdateUsernameRequest) returns (Empty);
+    rpc UpdateAvatar(UpdateProfileRequest) returns (Empty);
+    rpc GetProfileBySid(GetProfileBySidRequest) returns (Profile);
+    rpc GetProfileByUsername(GetProfileByUsernameRequest) returns (Profile);
+    rpc GetProfileByUserId(GetProfileByUserIdRequest) returns (Profile);
+}
+
+message Empty{}
+
+message Profile{
+    int32 user_id = 1;
+    string display_sid = 2;
+    string display_username = 3;
+    string username = 4;
+    string avatar = 5;
+}
+
+message AddProfileRequest{
+    int32 user_id = 1;
+}
+
+message UpdateUsernameRequest{
+    int32 user_id = 1;
+    string username = 2;
+}
+
+
+message UpdateProfileRequest{
+    int32 user_id = 1;
+    optional string avatar = 2;
+    optional string display_username = 3;
+}
+
+message GetProfileBySidRequest{
+    string sid = 1;
+}
+message GetProfileByUsernameRequest{
+    string username = 1;
+}
+message GetProfileByUserIdRequest{
+    int32 user_id = 1;
+}

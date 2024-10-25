@@ -1,0 +1,10 @@
+version: "3"
+
+vars:
+    app_name: voolibow_gw
+
+tasks:
+    run: 
+        desc: Run the app
+        cmds:
+        - cargo r -- --listen-address=127.0.0.1:8082 --db-host=localhost --db-port=5432 --db-username=postgres --db-password=postgres --db-name=profiles

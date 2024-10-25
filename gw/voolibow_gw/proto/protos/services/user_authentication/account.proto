@@ -1,0 +1,65 @@
+syntax = "proto3";
+ 
+package account;
+
+option go_package = "./account";
+
+
+service AccountService{
+    rpc Logout(LogoutRequest) returns (Empty);
+    rpc KillSession(KillSessionRequest) returns (Empty);
+    rpc GetSessions(GetSessionsRequest) returns (Sessions);
+    rpc GetLoginHistory(GetLoginHistories) returns (LoginHistories);
+}
+
+message Empty{}
+
+message KillSessionRequest{
+    int32 session_id = 1;
+}
+
+message LogoutRequest{
+    string access_token = 1;
+    int32 user_id = 2;
+}
+
+message GetSessionsRequest{
+    int32 user_id = 1;
+}
+
+message Session{
+    string agent = 1;
+    string ip = 2;
+    string status = 3;
+    int32 session_id = 4;
+    string created_at = 5;
+}
+
+message Sessions {
+    repeated Session sessions = 1;
+}
+
+message GetLoginHistories{
+    int32 user_id = 1;
+    Pagination pagination = 2;
+}
+message Pagination{
+    int32 offset = 1;
+    int32 limit = 2;
+    bool get_total = 3;
+}
+
+message LoginHistory{
+    string id = 1;
+    int32 user_id = 2;
+    string user_role = 3;
+    string section = 4;
+    string ip = 5;
+    string agent = 6;
+    string logged_in_at = 7;
+}
+
+message LoginHistories{
+    repeated LoginHistory login_histories = 1;
+    optional int64 total = 2;
+}

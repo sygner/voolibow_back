@@ -1,0 +1,49 @@
+syntax = "proto3";
+ 
+package authentication;
+
+service AuthenticationService{
+    rpc Signup(SignupRequest) returns (OptionalResponse);
+    rpc Verify(VerificationRequest) returns (VerificationResponse);
+    rpc Signin(SigninRequest) returns (OptionalResponse);
+}
+
+enum VerificationMethod{
+    VERIFY_PHONE_NUMBER = 0;
+    VERIFY_SIGN_IN = 1;
+}
+
+message SignupRequest{
+    string phone = 1;
+    string agent = 2;
+    string ip = 3;
+}
+
+message OptionalResponse{
+    optional string code = 1;
+    optional string msg = 2;
+
+}
+
+message VerificationResponse{
+    TokenInfo token_info = 1;
+    int32 user_id = 2;
+}
+message TokenInfo{
+    string access_token = 1;
+    string refresh_token = 2;
+    int32 expiry = 3;
+}
+
+message VerificationRequest{
+    VerificationMethod verification_method = 1;
+    string code = 2;
+    string agent = 3;
+    string ip = 4;
+}
+
+message SigninRequest{
+    string phone = 1;
+    string agent = 2;
+    string ip = 3;
+}
